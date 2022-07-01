@@ -20,11 +20,13 @@
                 <field id="schedule" translate="label" type="button" sortOrder="3" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Schedule New Report</label>
-                    <depends>
-                        <field id="active">1</field>
-                    </depends>
                     <frontend_model>Perspective\Lighthouse\ScheduleNewReport</frontend_model>
                     <comment>Cron must be work</comment>
+                </field>
+                <field id="node_path" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Node path</label>
+                    <comment>Absolute path of node(v16.15.1)</comment>
                 </field>
             </group>
         </section>

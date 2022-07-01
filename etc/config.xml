@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<lighthouse>
+			<schedule_group>
+				<node_path>~/.nvm/versions/node/v16.15.1/bin/node</node_path>
+			</schedule_group>
+		</lighthouse>
+        <customer>
+            <address>
+                <street_lines>3</street_lines>
+            </address>
+        </customer>
+	</default>
+</config>
