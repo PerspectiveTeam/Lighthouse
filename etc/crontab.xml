@@ -5,7 +5,7 @@
         <job name="lighthouse_schedule_job" instance="Perspective\Lighthouse\Cron\RunLighthouseCronjob"
              method="execute">
 <!--            <config_path>crontab/perspective_lighthouse/jobs/lighthouse_schedule_job/schedule/cron_expr</config_path>-->
-            <schedule>* * * * *</schedule>
+<!--            <schedule>* * * * *</schedule>-->
         </job>
     </group>
 </config>

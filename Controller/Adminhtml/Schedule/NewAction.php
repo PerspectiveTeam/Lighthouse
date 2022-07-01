@@ -61,8 +61,8 @@ class NewAction extends Action implements ActionInterface
             $schedule = $this->cronScheduleCollection->getNewEmptyItem();
             $schedule
                 ->setJobCode(JobCodeInterface::JOB_CODE_NAME)
-                ->setStatus(Schedule::STATUS_RUNNING)
-                ->setFinishedAt(date('Y-m-d H:i:s', $this->getCronTimestamp()))
+                ->setStatus(Schedule::STATUS_PENDING)
+                ->setScheduledAt(date('Y-m-d H:i:s', $this->getCronTimestamp()))
                 ->save();
             $message = __('Successfully scheduled.');
             $data = [
