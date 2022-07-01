@@ -26,7 +26,7 @@
                 <field id="node_path" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="0"
                        showInStore="0">
                     <label>Node path</label>
-                    <comment>Absolute path of node(v16.15.1)</comment>
+                    <comment>Absolute path or path with home prefix '~' of node(v16.15.1)</comment>
                 </field>
             </group>
         </section>

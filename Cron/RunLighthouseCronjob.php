@@ -72,10 +72,14 @@ class RunLighthouseCronjob
         //try to use v16.15.1 version of node if you get error or coredumped
         $this->logger->info('Node version:' . $this->scopeConfig->getValue('lighthouse/general/node_path') ?? 'absent version! May works.');
         $this->logger->info('Try to use v16.15.1 version of node if you get error or coredumped.');
-        $pathForLighthouseCli = $this->directory->getDir( 'Perspective_Lighthouse') . '/node_modules/lighthouse/lighthouse-cli/index.js';
+        $pathForLighthouseCli = $this->directory->getDir('Perspective_Lighthouse') . '/node_modules/lighthouse/lighthouse-cli/index.js';
+        $nodePath = $this->scopeConfig->getValue('lighthouse/schedule_group/node_path');
+        if (strpos($nodePath, '~') !== false) {
+            $nodePath = getenv('HOME') . ltrim($nodePath, '~');
+        }
         $lighthouse
             ->setLighthousePath($pathForLighthouseCli)
-            ->setNodePath($this->scopeConfig->getValue('lighthouse/schedule_group/node_path'))
+            ->setNodePath($nodePath)
             ->accessibility()
             ->bestPractices()
             ->performance()
