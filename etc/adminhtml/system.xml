@@ -1,0 +1,32 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="perspective" translate="label" class="perspective-tab">
+            <label>Perspective Studio</label>
+        </tab>
+        <section id="lighthouse"
+                 translate="label"
+                 type="text"
+                 sortOrder="320"
+                 showInDefault="1"
+                 showInWebsite="1"
+                 showInStore="1">
+            <tab>perspective</tab>
+            <label>Lighthouse</label>
+            <resource>Perspective_Lighthouse::lighthouse_config</resource>
+            <group id="schedule_group" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                   showInStore="1">
+                <label>Actions</label>
+                <field id="schedule" translate="label" type="button" sortOrder="3" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Schedule New Report</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <frontend_model>Perspective\Lighthouse\ScheduleNewReport</frontend_model>
+                    <comment>Cron must be work</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
