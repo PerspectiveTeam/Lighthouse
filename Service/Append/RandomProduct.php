@@ -23,6 +23,10 @@ class RandomProduct implements PageTypeToAppendInterface
     public function append($urls): array
     {
         $collection = $this->productCollectionFactory->create();
+        if (!$collection->getSize() > 0) {
+            return $urls;
+        }
+        //clean up the collection to avoid unforeseen issues
         $collection->addFieldToFilter('status', 1);
         $collection->addFieldToFilter('visibility', ['in' => [2, 3, 4]]);
         $collection->addAttributeToSelect('*')

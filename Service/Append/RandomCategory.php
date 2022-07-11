@@ -20,6 +20,10 @@ class RandomCategory implements PageTypeToAppendInterface
     public function append($urls): array
     {
         $collection = $this->categoryFactory->create();
+        if (!$collection->getSize() > 0) {
+            return $urls;
+        }
+        //clean up the collection to avoid unforeseen issues
         $collection->addFieldToFilter('is_active', 1);
         $collection->addAttributeToSelect('*')
             ->setPageSize(3);

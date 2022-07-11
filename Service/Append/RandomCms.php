@@ -29,6 +29,10 @@ class RandomCms implements PageTypeToAppendInterface
     public function append($urls): array
     {
         $collection = $this->cmsCollectionFactory->create();
+        if (!$collection->getSize() > 0) {
+            return $urls;
+        }
+        //clean up the collection to avoid unforeseen issues
         $collection->addFieldToFilter('is_active', 1);
         $collection->setPageSize(3);
         $collection->getSelect()->orderRand();
