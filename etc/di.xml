@@ -22,4 +22,14 @@
             <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
         </arguments>
     </type>
+    <type name="Perspective\Lighthouse\Service\UrlsArrayAppend">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="0" xsi:type="object">Perspective\Lighthouse\Service\Append\Home</item>
+                <item name="1" xsi:type="object">Perspective\Lighthouse\Service\Append\RandomCategory</item>
+                <item name="2" xsi:type="object">Perspective\Lighthouse\Service\Append\RandomCms</item>
+                <item name="3" xsi:type="object">Perspective\Lighthouse\Service\Append\RandomProduct</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

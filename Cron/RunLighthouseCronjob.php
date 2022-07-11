@@ -71,11 +71,19 @@ class RunLighthouseCronjob
         $lighthouse = $this->lighthouseFactory->create();
         //try to use v16.15.1 version of node if you get error or coredumped
         $this->logger->info('Node version:' . $this->scopeConfig->getValue('lighthouse/general/node_path') ?? 'absent version! May works.');
-        $this->logger->info('Try to use v16.15.1 version of node if you get error or coredumped.');
         $pathForLighthouseCli = $this->directory->getDir('Perspective_Lighthouse') . '/node_modules/lighthouse/lighthouse-cli/index.js';
-        $nodePath = $this->scopeConfig->getValue('lighthouse/schedule_group/node_path');
-        if (strpos($nodePath, '~') !== false) {
-            $nodePath = getenv('HOME') . ltrim($nodePath, '~');
+        $nodePath = $this->directory->getDir('Perspective_Lighthouse') . '/node/v16.15.1/bin/node';
+        if (empty($nodePath)) {
+            $nodePath = $this->scopeConfig->getValue('lighthouse/schedule_group/node_path');
+            if (strpos($nodePath, '~') !== false) {
+                $nodePath = getenv('HOME') . ltrim($nodePath, '~');
+            }
+            //check if node path is exist
+            if (empty($nodePath)) {
+                //if not present log message and shutdown cronjob
+                $this->logger->info('Node path is not set. Please set it in the configuration.');
+                return;
+            }
         }
         $lighthouse
             ->setLighthousePath($pathForLighthouseCli)
