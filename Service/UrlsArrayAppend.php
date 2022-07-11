@@ -15,7 +15,11 @@ class UrlsArrayAppend
     {
         $urls = [];
         foreach ($this->data as $pageTypeToAppend) {
-            $urls = array_merge($urls, $pageTypeToAppend->append($urls));
+            try {
+                $urls = array_merge($urls, $pageTypeToAppend->append($urls));
+            } catch (\Exception $e) {
+                // do nothing
+            }
         }
         return $urls;
     }
