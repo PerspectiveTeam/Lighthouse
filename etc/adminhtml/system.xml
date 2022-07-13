@@ -23,6 +23,11 @@
                     <frontend_model>Perspective\Lighthouse\ScheduleNewReport</frontend_model>
                     <comment>Cron must be work</comment>
                 </field>
+                <field id="view_results_buttong" translate="label" type="button" sortOrder="3" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>View list of results</label>
+                    <frontend_model>Perspective\Lighthouse\ViewListOfResults</frontend_model>
+                </field>
                 <field id="node_path" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="0"
                        showInStore="0">
                     <label>Node path</label>

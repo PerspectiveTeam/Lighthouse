@@ -9,6 +9,14 @@
             <argument name="template" xsi:type="string">Perspective_Lighthouse::system/config/collect.phtml</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Perspective\Lighthouse\ViewListOfResults" type="Perspective\Lighthouse\Block\System\Config\Collect">
+        <arguments>
+            <argument name="actionUrl" xsi:type="string">lighthouse/results/index</argument>
+            <argument name="buttonName" translatable="true" xsi:type="string">View List Of Results</argument>
+            <argument name="buttonComment" translatable="true" xsi:type="string">View List Of Results</argument>
+            <argument name="template" xsi:type="string">Perspective_Lighthouse::system/config/redirect.phtml</argument>
+        </arguments>
+    </virtualType>
     <type name="Perspective\Lighthouse\Helper\Logger">
         <arguments>
             <argument name="name" xsi:type="string">generalLogger</argument>

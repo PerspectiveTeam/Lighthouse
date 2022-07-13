@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<grid xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Hyva_Admin:etc/hyva-grid.xsd">
+    <source>
+        <arrayProvider>Perspective\Lighthouse\Ui\Grid\ResultDataProvider</arrayProvider>
+    </source>
+    <columns>
+        <include>
+            <column name="id" />
+            <column name="type" />
+            <column name="date" />
+            <column name="url" template="Perspective_Lighthouse::grid/cell/block.phtml" />
+        </include>
+    </columns>
+    <actions idColumn="path">
+        <action id="get" label="Get Result" url="*/*/get"/>
+    </actions>
+</grid>
