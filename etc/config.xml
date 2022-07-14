@@ -4,6 +4,7 @@
 		<lighthouse>
 			<schedule_group>
 				<node_path>~/.nvm/versions/node/v16.15.1/bin/node</node_path>
+				<chrome_path>~/chrome-linux/chrome</chrome_path>
 			</schedule_group>
 		</lighthouse>
 	</default>

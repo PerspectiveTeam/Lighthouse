@@ -6,7 +6,8 @@
     "require": {
         "magento/framework": "*",
         "dzava/lighthouse": "*",
-        "hyva-themes/module-magento2-admin": "*"
+        "hyva-themes/module-magento2-admin": "*",
+        "symfony/process": "*"
     },
     "license": [
         "Proprietary"

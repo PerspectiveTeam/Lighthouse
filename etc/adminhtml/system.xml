@@ -33,6 +33,11 @@
                     <label>Node path</label>
                     <comment>Absolute path or path with home prefix '~' of node(v16.15.1). It's fallback value and is used only if built-in nodejs is not available</comment>
                 </field>
+                <field id="chrome_path" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Chrome path</label>
+                    <comment>Absolute path or path with home prefix '~' of Chrome executable. It's fallback value and is used only if built-in Chrome is not available</comment>
+                </field>
             </group>
         </section>
     </system>

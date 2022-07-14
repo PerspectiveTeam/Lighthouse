@@ -29,7 +29,9 @@ class RandomCategory implements PageTypeToAppendInterface
             ->setPageSize(3);
         $collection->getSelect()->orderRand();
         $category = $collection->getFirstItem();
-        $urls[$this->getPageTypeName()] = $category->getUrl();
+        if ((int)$category->getId() !== 2) {
+            $urls[$this->getPageTypeName()] = $category->getUrl();
+        }
         return $urls;
     }
 
