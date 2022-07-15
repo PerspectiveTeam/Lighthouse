@@ -95,7 +95,6 @@ class RunLighthouseCronjob
         $lighthouse = $this->lighthouseFactory->create();
         //try to use v16.15.1 version of node if you get error or coredumped
         $pathForLighthouseCli = $this->getPathForLighthouseCli();
-        $currentNodeVersion = $this->manageNodeVersion();
         $nodePath = $this->getNodePath();
         $chromePath = $this->getChromePath();
         $lighthouse
@@ -106,11 +105,10 @@ class RunLighthouseCronjob
             ->performance()
             ->pwa()
             ->seo()
-            ->setChromeFlags(["--ignore-certificate-errors", '--headless', '--disable-gpu', '--no-sandbox'])
+            ->setChromeFlags(["--ignore-certificate-errors", '--headless', '--disable-gpu', '--no-sandbox', "--enable-logging"])
             ->setChromePath($chromePath);
         $urls = $this->urlsArrayAppend->getUrlsArray();
         $this->auditGivenUrls($urls, $lighthouse);
-        $this->manageNode->setNodeVersion($currentNodeVersion);
     }
 
     /**
@@ -118,7 +116,9 @@ class RunLighthouseCronjob
      */
     protected function getNodePath()
     {
-        $nodePath = trim($this->manageNode->runPlainScript($this->prepareNvm() . ' && nvm which current')->getOutput());
+        $nodePathArr = explode(PHP_EOL, trim($this->manageNode->runPlainScript($this->prepareNvm() . ' && nvm use ' . $this->manageNode::NODE_VERSION . ' && nvm which current')->getOutput()));
+        // always on last position
+        $nodePath = end($nodePathArr);
         if (empty($nodePath) || !file_exists($nodePath)) {
             $this->logger->error('Node not found. Trying fallback Node');
             $nodePath = $this->scopeConfig->getValue('lighthouse/schedule_group/node_path');
@@ -140,7 +140,8 @@ class RunLighthouseCronjob
      */
     protected function getChromePath()
     {
-        $chromePath = $this->directory->getDir('Perspective_Lighthouse') . '/latest/chrome';
+       // $chromePath = $this->directory->getDir('Perspective_Lighthouse') . '/latest/chrome';
+        $chromePath = getenv('HOME') . '/bin/chrome';
         if (empty($chromePath) || !file_exists($chromePath)) {
             $this->logger->error('Node not found. Trying fallback Chrome');
             $chromePath = $this->scopeConfig->getValue('lighthouse/schedule_group/chrome_path');
@@ -155,17 +156,6 @@ class RunLighthouseCronjob
             }
         }
         return $chromePath;
-    }
-
-    /**
-     * @return string
-     */
-    protected function manageNodeVersion(): string
-    {
-        $this->logger->info('Switching to ' . $this->manageNode::NODE_VERSION);
-        $currentNodeVersion = $this->manageNode->getNodeVersion();
-        $this->manageNode->setNodeVersion($this->manageNode::NODE_VERSION);
-        return $currentNodeVersion;
     }
 
     /**

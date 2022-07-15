@@ -15,7 +15,6 @@ class InstallNode extends AbstractDeps implements ToolsInterface
         $currentVersionValue = $this->getNodeVersion();
         $this->installSpecifiedNodeVersion(static::NODE_VERSION);
         $this->installSpecifiedNodeVersion($currentVersionValue);
-        $this->setNodeVersion($currentVersionValue);
     }
 
     /**
@@ -38,15 +37,38 @@ class InstallNode extends AbstractDeps implements ToolsInterface
     {
         $this->logger->info('Exporting NVM to system');
         $cmdExportNvm = 'export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"';
-        $this->runPlainScript('#!/bin/bash' . PHP_EOL . ' ' . $cmdExportNvm, 10);
-        $this->runPlainScript('#!/bin/zsh' . PHP_EOL . ' ' . $cmdExportNvm, 10);
-        $this->runPlainScript('#!/bin/ksh' . PHP_EOL . ' ' . $cmdExportNvm, 10);
-        $this->runPlainScript('#!/bin/bash' . PHP_EOL . ' ' . ' source ~/.bashrc', 5);
-        $this->runPlainScript('#!/bin/zsh' . PHP_EOL . ' ' . 'source ~/.zshrc', 5);
-        $this->runPlainScript('#!/bin/ksh' . PHP_EOL . ' ' . '. ~/.profile', 5);
+        $shell = trim(shell_exec('echo $0'));
+        $this->runPlainScript('#!/usr/bin/env' . $shell . PHP_EOL . ' ' . $cmdExportNvm, 10);
+        if (strlen(trim(shell_exec('echo $NVM_DIR'))) === 0) {
+            // if export failed, try to fallback
+            $this->runPlainScript($this->prepareNvm());
+        }
+        switch ($shell) {
+            case 'bash':
+                $this->runPlainScript('#!/usr/bin/env' . $shell . PHP_EOL . ' ' . ' source ~/.bashrc', 5);
+                break;
+            case 'sh':
+                $this->runPlainScript('#!/usr/bin/env' . $shell . PHP_EOL . ' ' . ' source ~/.bashrc', 5);
+                break;
+            case 'zsh':
+                $this->runPlainScript('#!/usr/bin/env' . $shell . PHP_EOL . ' ' . 'source ~/.zshrc', 5);
+                break;
+            case 'ksh':
+                $this->runPlainScript('#!/usr/bin/env' . $shell . PHP_EOL . ' ' . '. ~/.profile', 5);
+                break;
+            default:
+                //just try to invoke all
+                $this->runPlainScript('#!/usr/bin/env' . $shell . PHP_EOL . ' ' . ' source ~/.bashrc', 5);
+                $this->runPlainScript('#!/usr/bin/env' . $shell . PHP_EOL . ' ' . ' source ~/.bashrc', 5);
+                $this->runPlainScript('#!/usr/bin/env' . $shell . PHP_EOL . ' ' . 'source ~/.zshrc', 5);
+                $this->runPlainScript('#!/usr/bin/env' . $shell . PHP_EOL . ' ' . '. ~/.profile', 5);
+                break;
+        }
     }
 
     /**
+     * I think also need deprecate like
+     * @see setNodeVersion
      * @return string
      */
     public function getNodeVersion(): string
@@ -80,7 +102,10 @@ class InstallNode extends AbstractDeps implements ToolsInterface
     }
 
     /**
-     * @param string $currentVersionValue
+     * @deprecated
+     * cause nvm runs as function of current shell
+     * so it dies in the end of command execution
+     * @param string $versionValue
      * @return void
      */
     public function setNodeVersion(string $versionValue): void

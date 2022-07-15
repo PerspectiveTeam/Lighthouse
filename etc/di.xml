@@ -49,4 +49,5 @@
             </argument>
         </arguments>
     </type>
+    <type name="Perspective\Lighthouse\Service\Deps\AbstractDeps" shared="false"/>
 </config>

@@ -47,7 +47,7 @@ class AbstractDeps
 
     public function runCli(array $command, int $timeout = 60, $callback = null)
     {
-        $this->setEnvs();
+        $this->processEnvs();
         $symphonyProcess = new Process(
             $command,
             $this->directory->getDir('Perspective_Lighthouse'),
@@ -60,17 +60,23 @@ class AbstractDeps
     /**
      * @return void
      */
-    protected function setEnvs(): void
+    protected function processEnvs(): void
     {
         if (!$this->envsProcessed) {
-            putenv('PATH=' . getenv('PATH') . ':' . trim(shell_exec('echo $NVM_DIR')));
+            $envArray[] = trim(shell_exec('echo $NVM_DIR'));
+            $envArray[] = getenv('HOME') . '/bin';
+            $envArray = array_filter($envArray);
+            $nvmDirEnv = ':' . implode(':', $envArray);
+            if (strlen($nvmDirEnv) > 1) {
+                putenv('PATH=' . getenv('PATH') . $nvmDirEnv);
+            }
             $this->envsProcessed = true;
         }
     }
 
     public function runPlainScript($command, int $timeout = 60, $callback = null)
     {
-        $this->setEnvs();
+        $this->processEnvs();
         $symphonyProcess = Process::fromShellCommandline(
             $command,
             $this->directory->getDir('Perspective_Lighthouse'),

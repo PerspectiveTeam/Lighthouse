@@ -14,6 +14,7 @@ class CheckAndPrepareTools
 
     public function execute()
     {
+        /** @var \Perspective\Lighthouse\Api\Data\ToolsInterface $tool */
         foreach ($this->tools as $tool) {
             $tool->execute();
         }
