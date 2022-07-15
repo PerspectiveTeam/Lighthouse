@@ -10,6 +10,11 @@ use Magento\Framework\Controller\ResultFactory;
 class Get extends Action implements ActionInterface
 {
     /**
+     * @var \Magento\Backend\App\Action\Context
+     */
+    private Context $context;
+
+    /**
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\ResultFactory $resultFactory
      */
@@ -19,6 +24,7 @@ class Get extends Action implements ActionInterface
     ) {
         parent::__construct($context);
         $this->resultFactory = $resultFactory;
+        $this->context = $context;
     }
 
     /**
@@ -30,9 +36,10 @@ class Get extends Action implements ActionInterface
         $page = $this->resultFactory->create(ResultFactory::TYPE_RAW);
         $path = base64_decode($this->getRequest()->getParam('path'));
         if ($path === 'empty') {
-            /** @var \Magento\Framework\Controller\Result\Forward $page */
-            $page = $this->resultFactory->create(ResultFactory::TYPE_FORWARD);
-            $page->forward('dashboard');
+            /** @var \Magento\Framework\Controller\Result\Redirect $page */
+            $page = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $page->setPath('lighthouse/results/index');
+            $this->context->getMessageManager()->addNoticeMessage('No results found.');
             return $page;
         }
         $content = file_get_contents($path);
