@@ -26,8 +26,15 @@ class Get extends Action implements ActionInterface
      */
     public function execute()
     {
+        /** @var \Magento\Framework\Controller\Result\Raw $page */
         $page = $this->resultFactory->create(ResultFactory::TYPE_RAW);
         $path = base64_decode($this->getRequest()->getParam('path'));
+        if ($path === 'empty') {
+            /** @var \Magento\Framework\Controller\Result\Forward $page */
+            $page = $this->resultFactory->create(ResultFactory::TYPE_FORWARD);
+            $page->forward('dashboard');
+            return $page;
+        }
         $content = file_get_contents($path);
         $page->setContents($content);
         return $page;

@@ -44,7 +44,7 @@ class ResultDataProvider implements HyvaGridArrayProviderInterface
             $results[] = [
                 'id' => null,
                 'date' => null,
-                'path' => null,
+                'path' => base64_encode('empty'),
                 'url' => null,
                 'type' => null
             ];
