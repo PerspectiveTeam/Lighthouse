@@ -69,8 +69,14 @@ class InstallNode extends AbstractDeps implements ToolsInterface
         }
         $this->logger->info('Installing Node Version: ' . $version);
         $scriptString = $this->prepareNvm() . ' && nvm install ' . $version;
-        $this->runPlainScript($scriptString);
-        $this->logger->info('Installed Node Version: ' . $version);
+        $process = $this->runPlainScript($scriptString);
+        if ($process->getExitCode() !== 0) {
+            $this->logger->error('Error while installing Node Version: ' . $version);
+            $this->logger->error($process->getErrorOutput(), ['errorOutput']);
+            $this->logger->error($process->getOutput(), ['regularOutput']);
+        } else {
+            $this->logger->info('Node Version: ' . $version . ' installed');
+        }
     }
 
     /**
