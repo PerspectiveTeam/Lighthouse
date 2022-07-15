@@ -40,6 +40,14 @@ class ResultDataProvider implements HyvaGridArrayProviderInterface
                     'type' => $matchesType[1] ?? 'unknown'
                 ];
             }
+        } else {
+            $results[] = [
+                'id' => null,
+                'date' => null,
+                'path' => null,
+                'url' => null,
+                'type' => null
+            ];
         }
         return $results;
     }
