@@ -9,10 +9,11 @@ class InstallModuleDeps extends AbstractDeps implements \Perspective\Lighthouse\
 
     public function execute()
     {
-        $this->logger->info('Installing module dependencies');
+        $this->logger->info('Processing module dependencies');
         $moduleRoot = $this->directory->getDir('Perspective_Lighthouse');
         $cmdInstallDeps = $this->prepareNvm() . ' && cd ' . $moduleRoot . ' && nvm run ' . static::NODE_VERSION . ' ~/.nvm/versions/node/' . static::NODE_VERSION . '/bin/npm install';
-        $this->runPlainScript($cmdInstallDeps);
-        $this->logger->info('Installed module dependencies');
+        $process = $this->runPlainScript($cmdInstallDeps);
+        $this->logger->info($process->getErrorOutput() ?: $process->getOutput());
+        $this->logger->info('Processed module dependencies');
     }
 }

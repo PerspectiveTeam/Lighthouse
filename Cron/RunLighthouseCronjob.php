@@ -85,7 +85,7 @@ class RunLighthouseCronjob
         try {
             $this->logger->info('Start toolkit checking');
             $this->checkAndPrepareTools->execute();
-            $this->logger->info('Toolkit checkied without errors');
+            $this->logger->info('Toolkit checked without errors');
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
