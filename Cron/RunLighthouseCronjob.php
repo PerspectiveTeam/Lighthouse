@@ -96,7 +96,6 @@ class RunLighthouseCronjob
         //try to use v16.15.1 version of node if you get error or coredumped
         $pathForLighthouseCli = $this->getPathForLighthouseCli();
         $nodePath = $this->getNodePath();
-        $chromePath = $this->getChromePath();
         $lighthouse
             ->setLighthousePath($pathForLighthouseCli)
             ->setNodePath($nodePath)
@@ -105,8 +104,7 @@ class RunLighthouseCronjob
             ->performance()
             ->pwa()
             ->seo()
-            ->setChromeFlags(["--ignore-certificate-errors", '--headless', '--disable-gpu', '--no-sandbox', "--enable-logging"])
-            ->setChromePath($chromePath);
+            ->setChromeFlags(["--ignore-certificate-errors", '--headless', '--disable-gpu', '--no-sandbox', "--enable-logging"]);
         $urls = $this->urlsArrayAppend->getUrlsArray();
         $this->auditGivenUrls($urls, $lighthouse);
     }
@@ -133,29 +131,6 @@ class RunLighthouseCronjob
             }
         }
         return $nodePath;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    protected function getChromePath()
-    {
-       // $chromePath = $this->directory->getDir('Perspective_Lighthouse') . '/latest/chrome';
-        $chromePath = getenv('HOME') . '/bin/chrome';
-        if (empty($chromePath) || !file_exists($chromePath)) {
-            $this->logger->error('Node not found. Trying fallback Chrome');
-            $chromePath = $this->scopeConfig->getValue('lighthouse/schedule_group/chrome_path');
-            if (strpos($chromePath, '~') !== false) {
-                $chromePath = getenv('HOME') . ltrim($chromePath, '~');
-            }
-            //check if $chromePath path is exist
-            if (empty($chromePath)) {
-                //if not present log message and shutdown cronjob
-                $this->logger->info('Chrome Path is not set. Please set it in the configuration.');
-                $chromePath = null;
-            }
-        }
-        return $chromePath;
     }
 
     /**
