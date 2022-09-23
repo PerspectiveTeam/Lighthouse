@@ -3,6 +3,7 @@
 namespace Perspective\Lighthouse\Service\Append;
 
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Store\Api\Data\StoreInterface;
 use Perspective\Lighthouse\Api\Data\PageTypeToAppendInterface;
 
 class RandomProduct implements PageTypeToAppendInterface
@@ -11,6 +12,8 @@ class RandomProduct implements PageTypeToAppendInterface
      * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
      */
     private CollectionFactory $productCollectionFactory;
+
+    private StoreInterface $store;
 
     /**
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
@@ -33,12 +36,22 @@ class RandomProduct implements PageTypeToAppendInterface
             ->setPageSize(3);
         $collection->getSelect()->orderRand();
         $product = $collection->getFirstItem();
-        $urls[$this->getPageTypeName()] = $product->getProductUrl();
+        $urls[$this->getPageTypeName() . '@' . $this->getStore()->getCode()] = $product->getProductUrl();
         return $urls;
     }
 
     public function getPageTypeName(): string
     {
         return 'product';
+    }
+
+    public function setStore($store): void
+    {
+        $this->store = $store;
+    }
+
+    public function getStore()
+    {
+        return $this->store;
     }
 }
