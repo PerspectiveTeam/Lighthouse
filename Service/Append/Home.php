@@ -12,6 +12,8 @@ class Home implements PageTypeToAppendInterface
      */
     private UrlInterface $url;
 
+    private \Magento\Store\Api\Data\StoreInterface $store;
+
     /**
      * @param \Magento\Framework\UrlInterface $url
      */
@@ -23,12 +25,22 @@ class Home implements PageTypeToAppendInterface
 
     public function append(array $urls): array
     {
-        $urls[$this->getPageTypeName()] = $this->url->getBaseUrl();
+        $urls[$this->getPageTypeName() . '@' . $this->getStore()->getCode()] = $this->url->getBaseUrl();
         return $urls;
     }
 
     public function getPageTypeName(): string
     {
         return 'home';
+    }
+
+    public function setStore($store): void
+    {
+        $this->store = $store;
+    }
+
+    public function getStore()
+    {
+        return $this->store;
     }
 }

@@ -9,6 +9,8 @@ class RandomCategory implements PageTypeToAppendInterface
 {
     private CollectionFactory $categoryFactory;
 
+    private \Magento\Store\Api\Data\StoreInterface $store;
+
     /**
      * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryFactory
      */
@@ -30,7 +32,7 @@ class RandomCategory implements PageTypeToAppendInterface
         $collection->getSelect()->orderRand();
         $category = $collection->getFirstItem();
         if ((int)$category->getId() !== 2) {
-            $urls[$this->getPageTypeName()] = $category->getUrl();
+            $urls[$this->getPageTypeName() . '@' . $this->getStore()->getCode()] = $category->getUrl();
         }
         return $urls;
     }
@@ -38,5 +40,16 @@ class RandomCategory implements PageTypeToAppendInterface
     public function getPageTypeName(): string
     {
         return 'category';
+    }
+
+
+    public function setStore($store): void
+    {
+        $this->store = $store;
+    }
+
+    public function getStore()
+    {
+        return $this->store;
     }
 }

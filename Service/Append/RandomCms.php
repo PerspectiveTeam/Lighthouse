@@ -18,6 +18,8 @@ class RandomCms implements PageTypeToAppendInterface
      */
     private Page $cmsHelper;
 
+    private \Magento\Store\Api\Data\StoreInterface $store;
+
     public function __construct(
         CollectionFactory $cmsCollectionFactory,
         Page $cmsHelper
@@ -37,12 +39,22 @@ class RandomCms implements PageTypeToAppendInterface
         $collection->setPageSize(3);
         $collection->getSelect()->orderRand();
         $cmsPage = $collection->getFirstItem();
-        $urls[$this->getPageTypeName()] = $this->cmsHelper->getPageUrl($cmsPage->getId());
+        $urls[$this->getPageTypeName() . '@' . $this->getStore()->getCode()] = $this->cmsHelper->getPageUrl($cmsPage->getId());
         return $urls;
     }
 
     public function getPageTypeName(): string
     {
         return 'cms_page';
+    }
+
+    public function setStore($store): void
+    {
+        $this->store = $store;
+    }
+
+    public function getStore()
+    {
+        return $this->store;
     }
 }
