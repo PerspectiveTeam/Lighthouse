@@ -24,10 +24,14 @@ To install this package from BitBucket, use the following steps:
       ```
       yum install chromium
       ```
-      or just run this command if Ubuntu
+      or just run this command if Ubuntu/Debian (deb/dpkg)  
       ```  
       sudo apt-get install wget -y; wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb ; sudo  dpkg -i ./google-chrome-stable_current_amd64.deb ; sudo apt-get install -f -y
-      ```
+      ```  
+      or just run this command if Fedora/CentOS/OpenSUSE (yum/rpm)  
+      ```  
+      sudo yum install wget -y; wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm ; sudo yum install -y ./google-chrome-stable_current_x86_64.rpm ;
+      ```  
 2. Wait for installation or updating the dependencies. 
 3. Make an ordinary setup for the module:
    1. ```
