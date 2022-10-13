@@ -16,19 +16,12 @@ To install this package from BitBucket, use the following steps:
       2. ```"hyva-themes/module-magento2-admin"```  
    3. Install Node. Tested on v16.15.1
       1. Or you can try to use built-in node and dependencies
-   4. Install Chromium  
-      ```
-      apt-get install chromium
+   4. Install Chrome Browser 
+      by run this command if you have an Ubuntu/Debian (deb/dpkg)  
       ```  
-      or  
-      ```
-      yum install chromium
-      ```
-      or just run this command if Ubuntu/Debian (deb/dpkg)  
+      sudo apt-get install wget -y; wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb ; sudo apt-get update; sudo  dpkg -i ./google-chrome-stable_current_amd64.deb || sudo apt-get install --fix-broken --fix-missing -y
       ```  
-      sudo apt-get install wget -y; wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb ; sudo  dpkg -i ./google-chrome-stable_current_amd64.deb ; sudo apt-get install -f -y
-      ```  
-      or just run this command if Fedora/CentOS/OpenSUSE (yum/rpm)  
+      or just run this command if you have a Fedora/CentOS/OpenSUSE (yum/rpm)  
       ```  
       sudo yum install wget -y; wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm ; sudo yum install -y ./google-chrome-stable_current_x86_64.rpm ;
       ```  
