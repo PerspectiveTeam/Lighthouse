@@ -36,7 +36,7 @@ class Collect extends Field
      * @param string $buttonName
      * @param string $buttonComment
      * @param string $template
-     * @param array $data
+     * @param array<mixed> $data
      */
     public function __construct(
         Context $context,
@@ -61,6 +61,7 @@ class Collect extends Field
      */
     public function render(AbstractElement $element)
     {
+        /**@phpstan-ignore-next-line */
         $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
         return parent::render($element);
     }
@@ -75,6 +76,7 @@ class Collect extends Field
 
     /**
      * @param string $template
+     * @return void
      */
     public function setButtonTemplate(string $template)
     {
@@ -90,7 +92,8 @@ class Collect extends Field
     }
 
     /**
-     * @param $transtlitedName
+     * @param string $transtlitedName
+     * @return void
      */
     public function setTranstlitedName($transtlitedName)
     {
@@ -107,6 +110,7 @@ class Collect extends Field
 
     /**
      * @param string $buttonComment
+     * @return void
      */
     public function setButtonComment(string $buttonComment)
     {
@@ -123,6 +127,7 @@ class Collect extends Field
 
     /**
      * @param string $buttonName
+     * @return void
      */
     public function setButtonName(string $buttonName)
     {
@@ -139,6 +144,7 @@ class Collect extends Field
 
     /**
      * @param string $actionUrl
+     * @return void
      */
     public function setActionUrl(string $actionUrl)
     {
@@ -176,7 +182,9 @@ class Collect extends Field
     {
         $button = $this->getLayout()->createBlock(
             \Magento\Backend\Block\Widget\Button::class
-        )->setData(
+        );
+        /** @var \Magento\Backend\Block\Widget\Button $button */
+        $button->setData(
             [
                 'id' => $this->filterManager->translitUrl($this->getButtonName()),
                 'label' => __($this->getButtonName()),

@@ -10,8 +10,8 @@ interface PageTypeToAppendInterface
     public function getPageTypeName(): string;
 
     /**
-     * @param array $urls
-     * @return array
+     * @param array<mixed> $urls
+     * @return array<mixed>
      */
     public function append(array $urls): array;
 

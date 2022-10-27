@@ -20,6 +20,9 @@ class AbstractDeps
 
     protected ExecutableFinder $executableFinder;
 
+    /**
+     * @var bool
+     */
     private $envsProcessed = false;
 
     /**
@@ -29,6 +32,9 @@ class AbstractDeps
 
     /**
      * @param \Magento\Framework\Module\Dir $directory
+     * @param \Symfony\Component\Process\ExecutableFinder $executableFinder
+     * @param \Perspective\Lighthouse\Helper\Logger $logger
+     * @param \Perspective\Lighthouse\Helper\Logger\HandlerFactory $handlerFactory
      */
     public function __construct(
         Dir $directory,
@@ -40,18 +46,25 @@ class AbstractDeps
             'root' => '/var/log/lighthouse/',
             'filename' => 'lighthouse_' . date('H:i:s') . '.log'
         ]);
+        /**@phpstan-ignore-next-line */
         $this->logger = $logger->pushHandler($handler);
         $this->directory = $directory;
         $this->executableFinder = $executableFinder;
     }
 
+    /**
+     * @param array<mixed> $command
+     * @param int $timeout
+     * @param callable|null $callback
+     * @return \Symfony\Component\Process\Process<mixed>
+     */
     public function runCli(array $command, int $timeout = 60, $callback = null)
     {
         $this->processEnvs();
         $symphonyProcess = new Process(
             $command,
             $this->directory->getDir('Perspective_Lighthouse'),
-            explode(':', getenv('PATH'))
+            explode(':', (string)getenv('PATH'))
         );
         $symphonyProcess->setTimeout($timeout)->run($callback);
         return $symphonyProcess;
@@ -63,7 +76,7 @@ class AbstractDeps
     protected function processEnvs(): void
     {
         if (!$this->envsProcessed) {
-            $envArray[] = trim(shell_exec('echo $NVM_DIR'));
+            $envArray[] = trim(shell_exec('echo $NVM_DIR')?:'');
             $envArray[] = getenv('HOME') . '/bin';
             $envArray = array_filter($envArray);
             $nvmDirEnv = ':' . implode(':', $envArray);
@@ -74,13 +87,19 @@ class AbstractDeps
         }
     }
 
+    /**
+     * @param string $command
+     * @param int $timeout
+     * @param callable|null $callback
+     * @return \Symfony\Component\Process\Process<mixed>
+     */
     public function runPlainScript($command, int $timeout = 60, $callback = null)
     {
         $this->processEnvs();
         $symphonyProcess = Process::fromShellCommandline(
             $command,
             $this->directory->getDir('Perspective_Lighthouse'),
-            explode(':', getenv('PATH'))
+            explode(':', (string)getenv('PATH'))
         );
         $symphonyProcess->setTimeout($timeout)->run($callback);
         return $symphonyProcess;

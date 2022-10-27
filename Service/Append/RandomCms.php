@@ -38,8 +38,9 @@ class RandomCms implements PageTypeToAppendInterface
         $collection->addFieldToFilter('is_active', 1);
         $collection->setPageSize(3);
         $collection->getSelect()->orderRand();
+        /** @var \Magento\Cms\Model\Page $cmsPage */
         $cmsPage = $collection->getFirstItem();
-        $urls[$this->getPageTypeName() . '@' . $this->getStore()->getCode()] = $this->cmsHelper->getPageUrl($cmsPage->getId());
+        $urls[$this->getPageTypeName() . '@' . $this->getStore()->getCode()] = $this->cmsHelper->getPageUrl((string)$cmsPage->getId());
         return $urls;
     }
 

@@ -70,6 +70,7 @@ class RunLighthouseCronjob
             'root' => '/var/log/lighthouse/',
             'filename' => 'lighthouse_' . date('H:i:s') . '.log'
         ]);
+        /**@phpstan-ignore-next-line */
         $this->logger = $logger->pushHandler($handler);
         $this->scopeConfig = $scopeConfig;
         $this->directory = $directory;
@@ -79,6 +80,7 @@ class RunLighthouseCronjob
 
     /**
      * @return void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute(): void
     {
@@ -134,7 +136,7 @@ class RunLighthouseCronjob
     }
 
     /**
-     * @param array $urls
+     * @param array<mixed> $urls
      * @param \Dzava\Lighthouse\Lighthouse $lighthouse
      * @return void
      */

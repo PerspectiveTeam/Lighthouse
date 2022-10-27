@@ -6,6 +6,9 @@ use Perspective\Lighthouse\Api\Data\ToolsInterface;
 
 class InstallNode extends AbstractDeps implements ToolsInterface
 {
+    /**
+     * @inheritDoc
+     */
     public function execute()
     {
         $this->logger->info('Start download NVM');
@@ -37,9 +40,9 @@ class InstallNode extends AbstractDeps implements ToolsInterface
     {
         $this->logger->info('Exporting NVM to system');
         $cmdExportNvm = 'export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"';
-        $shell = trim(shell_exec('echo $0'));
+        $shell = trim(shell_exec('echo $0') ?: '/bin/sh');
         $this->runPlainScript('#!/usr/bin/env' . $shell . PHP_EOL . ' ' . $cmdExportNvm, 10);
-        if (strlen(trim(shell_exec('echo $NVM_DIR'))) === 0) {
+        if (strlen(trim(shell_exec('echo $NVM_DIR') ?: '')) === 0) {
             // if export failed, try to fallback
             $this->runPlainScript($this->prepareNvm());
         }
@@ -82,6 +85,7 @@ class InstallNode extends AbstractDeps implements ToolsInterface
 
 
     /**
+     * @param string $version
      * @return void
      */
     protected function installSpecifiedNodeVersion($version): void

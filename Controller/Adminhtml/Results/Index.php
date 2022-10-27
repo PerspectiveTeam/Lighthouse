@@ -26,6 +26,7 @@ class Index extends Action implements ActionInterface
      */
     public function execute()
     {
+        /** @var \Magento\Framework\View\Result\Page $page */
         $page = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
         $page->getConfig()->getTitle()->prepend(__('Lighthouse Results'));
         return $page;

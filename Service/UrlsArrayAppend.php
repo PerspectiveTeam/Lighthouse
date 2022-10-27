@@ -8,10 +8,20 @@ use Perspective\Lighthouse\Api\Data\PageTypeToAppendInterface;
 
 class UrlsArrayAppend
 {
+    /**
+     * @var array<mixed>
+     */
     private array $data;
 
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
     private StoreManagerInterface $storeManager;
 
+    /**
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param array<mixed> $data
+     */
     public function __construct(
         StoreManagerInterface $storeManager,
         array $data = array()
@@ -21,6 +31,10 @@ class UrlsArrayAppend
         $this->storeManager = $storeManager;
     }
 
+    /**
+     * @return array<mixed>
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getUrlsArray()
     {
         $currentStore = $this->storeManager->getStore();

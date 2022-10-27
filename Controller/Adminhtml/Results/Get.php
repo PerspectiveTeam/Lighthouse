@@ -43,7 +43,7 @@ class Get extends Action implements ActionInterface
             return $page;
         }
         $content = file_get_contents($path);
-        $page->setContents($content);
+        $page->setContents((string)$content);
         return $page;
     }
 }

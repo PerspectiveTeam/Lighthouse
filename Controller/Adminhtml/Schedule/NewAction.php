@@ -21,6 +21,9 @@ class NewAction extends Action implements ActionInterface
      */
     protected $resultJsonFactory;
 
+    /**
+     * @var \Magento\Cron\Model\ResourceModel\Schedule\Collection<\Magento\Cron\Model\Schedule>
+     */
     private Collection $cronScheduleCollection;
 
     private ProductMetadataInterface $productMetadata;
@@ -32,6 +35,10 @@ class NewAction extends Action implements ActionInterface
     /**
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\ResultFactory $resultFactory
+     * @param \Magento\Cron\Model\ResourceModel\Schedule\Collection<\Magento\Cron\Model\Schedule> $cronScheduleCollection
+     * @param \Magento\Framework\App\ProductMetadataInterface $productMetadata
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone
+     * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
      */
     public function __construct(
         Context $context,
@@ -58,6 +65,7 @@ class NewAction extends Action implements ActionInterface
         $data = [];
         $message = '';
         try {
+            /** @var \Magento\Cron\Model\Schedule $schedule */
             $schedule = $this->cronScheduleCollection->getNewEmptyItem();
             $schedule
                 ->setJobCode(JobCodeInterface::JOB_CODE_NAME)
@@ -79,6 +87,7 @@ class NewAction extends Action implements ActionInterface
                 'trace' => $e->getTraceAsString()
             ];
         }
+        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
         return $resultJson->setData([
             'message' => $message,

@@ -11,7 +11,20 @@ use DateTime;
 
 class Handler extends Base
 {
+    /**
+     * @var string
+     */
+    public $filename = 'log.log';
+
+    /**
+     * @var string
+     */
     public $root = '/var/log/logger';
+
+    /**
+     * @var string
+     */
+    public $folderDateFormat = 'd_m_Y';
 
     /**
      * @return mixed|string
@@ -77,10 +90,6 @@ class Handler extends Base
         $this->loggerType = $loggerType;
     }
 
-    public $filename = 'log.log';
-
-    public $folderDateFormat = 'd_m_Y';
-
     /**
      * {@inheritDoc}
      */
@@ -91,6 +100,14 @@ class Handler extends Base
      */
     protected $_date;
 
+    /**
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone
+     * @param \Magento\Framework\Filesystem\DriverInterface $filesystem
+     * @param string $filePath
+     * @param string $filename
+     * @param string $root
+     * @param string $folderDateFormat
+     */
     public function __construct(
         TimezoneInterface $timezone,
         DriverInterface $filesystem,

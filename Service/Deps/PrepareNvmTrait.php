@@ -9,8 +9,8 @@ trait PrepareNvmTrait
      */
     protected function prepareNvm(): string
     {
-        $shell = trim(shell_exec('echo $0'));
-        $nvmDir = trim(shell_exec('echo ${NVM_DIR}'));
+        $shell = trim(shell_exec('echo $0') ?: '/bin/sh');
+        $nvmDir = trim(shell_exec('echo ${NVM_DIR}') ?: '');
         if ($nvmDir === '') {
             // just try to fallback
             $nvmDir = getenv('HOME') . '/.nvm';

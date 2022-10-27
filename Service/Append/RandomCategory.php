@@ -30,6 +30,7 @@ class RandomCategory implements PageTypeToAppendInterface
         $collection->addAttributeToSelect('*')
             ->setPageSize(3);
         $collection->getSelect()->orderRand();
+        /** @var \Magento\Catalog\Model\Category $category */
         $category = $collection->getFirstItem();
         if ((int)$category->getId() !== 2) {
             $urls[$this->getPageTypeName() . '@' . $this->getStore()->getCode()] = $category->getUrl();

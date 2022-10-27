@@ -35,6 +35,7 @@ class RandomProduct implements PageTypeToAppendInterface
         $collection->addAttributeToSelect('*')
             ->setPageSize(3);
         $collection->getSelect()->orderRand();
+        /** @var \Magento\Catalog\Model\Product $product */
         $product = $collection->getFirstItem();
         $urls[$this->getPageTypeName() . '@' . $this->getStore()->getCode()] = $product->getProductUrl();
         return $urls;

@@ -4,7 +4,6 @@ namespace Perspective\Lighthouse\Ui\Grid;
 
 use Hyva\Admin\Api\HyvaGridArrayProviderInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Framework\Filesystem\Io\FileFactory;
 
 class ResultDataProvider implements HyvaGridArrayProviderInterface
 {
@@ -14,12 +13,14 @@ class ResultDataProvider implements HyvaGridArrayProviderInterface
      */
     private DirectoryList $directoryList;
 
-    public function __construct(DirectoryList $directoryList, FileFactory $fileFactory)
+    public function __construct(DirectoryList $directoryList)
     {
         $this->directoryList = $directoryList;
-        $this->fileFactory = $fileFactory;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getHyvaGridData(): array
     {
         $results = [];
@@ -34,8 +35,9 @@ class ResultDataProvider implements HyvaGridArrayProviderInterface
                 preg_match($regexUrl, $file, $matchesUrl);
                 $results[] = [
                     'id' => $i++,
-                    'date' => date('Y-m-d H:i:s', filemtime($file)),
+                    'date' => date('Y-m-d H:i:s', (int)filemtime($file)),
                     'path' => base64_encode($file),
+                    /**@phpstan-ignore-next-line */
                     'url' => urldecode($matchesUrl[1]) ?? $file,
                     'type' => $matchesType[1] ?? 'unknown'
                 ];
