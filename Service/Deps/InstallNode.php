@@ -27,8 +27,8 @@ class InstallNode extends AbstractDeps implements ToolsInterface
     {
         $cmdInstallNvm[] = 'curl';
         $cmdInstallNvm[] = '-o-';
-        $cmdInstallNvm[] = 'https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh';
-        $scriptContent = $this->runCli($cmdInstallNvm, 10)->getOutput();
+        $cmdInstallNvm[] = 'https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh';
+        $scriptContent = $this->runCli($cmdInstallNvm, 180)->getOutput();
         $this->logger->info('Init script downloaded. Executing the script');
         $this->runPlainScript($scriptContent);
     }

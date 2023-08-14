@@ -20,10 +20,6 @@ class AbstractDeps
 
     protected ExecutableFinder $executableFinder;
 
-    /**
-     * @var bool
-     */
-    private $envsProcessed = false;
 
     /**
      * @var \Perspective\Lighthouse\Helper\Logger
@@ -58,7 +54,7 @@ class AbstractDeps
      * @param callable|null $callback
      * @return \Symfony\Component\Process\Process<mixed>
      */
-    public function runCli(array $command, int $timeout = 60, $callback = null)
+    public function runCli(array $command, int $timeout = 300, $callback = null)
     {
         $this->processEnvs();
         $symphonyProcess = new Process(
@@ -66,6 +62,11 @@ class AbstractDeps
             $this->directory->getDir('Perspective_Lighthouse'),
             explode(':', (string)getenv('PATH'))
         );
+        if (!$callback) {
+            $callback = function ($type, $buffer) {
+                $this->logger->info($buffer);
+            };
+        }
         $symphonyProcess->setTimeout($timeout)->run($callback);
         return $symphonyProcess;
     }
@@ -75,15 +76,12 @@ class AbstractDeps
      */
     protected function processEnvs(): void
     {
-        if (!$this->envsProcessed) {
-            $envArray[] = trim(shell_exec('echo $NVM_DIR')?:'');
-            $envArray[] = getenv('HOME') . '/bin';
-            $envArray = array_filter($envArray);
-            $nvmDirEnv = ':' . implode(':', $envArray);
-            if (strlen($nvmDirEnv) > 1) {
-                putenv('PATH=' . getenv('PATH') . $nvmDirEnv);
-            }
-            $this->envsProcessed = true;
+        $envArray[] = trim(shell_exec('echo $NVM_DIR') ?: '');
+        $envArray[] = getenv('HOME') . '/.nvm';
+        $envArray = array_filter($envArray);
+        $nvmDirEnv = ':' . implode(':', $envArray);
+        if (strlen($nvmDirEnv) > 1) {
+            putenv('PATH=' . getenv('PATH') . $nvmDirEnv);
         }
     }
 
@@ -93,14 +91,20 @@ class AbstractDeps
      * @param callable|null $callback
      * @return \Symfony\Component\Process\Process<mixed>
      */
-    public function runPlainScript($command, int $timeout = 60, $callback = null)
+    public function runPlainScript($command, int $timeout = 300, $callback = null)
     {
         $this->processEnvs();
+// bash -c робе без -с не робе - висне
         $symphonyProcess = Process::fromShellCommandline(
-            $command,
+            'bash "' . $command . '"',
             $this->directory->getDir('Perspective_Lighthouse'),
             explode(':', (string)getenv('PATH'))
         );
+        if (!$callback) {
+            $callback = function ($type, $buffer) {
+                $this->logger->info($buffer);
+            };
+        }
         $symphonyProcess->setTimeout($timeout)->run($callback);
         return $symphonyProcess;
     }

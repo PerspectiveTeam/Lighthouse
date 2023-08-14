@@ -4,17 +4,14 @@
 To install this package from BitBucket, use the following steps:
 
 1. Go to Magento 2 root directory.  
-   1. If you want to install to vendor directory then use the following command:   
+   1. If you want to install to vendor directory then use the following command:    
    ```
-   composer config repositories.perspective/module-lighthouse vcs https://bitbucket.org/monteshot/perspective_lighthouse.git
-   ```  
-   ```
-   composer require perspective/module-lighthouse:"dev-master" -vvv
+   composer require perspective/module-lighthouse:"*" -vvv
    ```  
    2. If installation is in app/code then install required dependencies:  
       1. ```"dzava/lighthouse"```  
       2. ```"hyva-themes/module-magento2-admin"```  
-   3. Install Node. Tested on v16.15.1
+   3. Also you have to install Node. Tested on v16.15.1
       1. Or you can try to use built-in node and dependencies
    4. Install Chrome Browser 
       by run this command if you have an Ubuntu/Debian (deb/dpkg)  
@@ -31,7 +28,7 @@ To install this package from BitBucket, use the following steps:
       bin/magento mo:e Hyva_Admin Perspective_Lighthouse
       ```  
    2. ```
-      bin/magento setup:upgrade
+      bin/magento s:up
       ```
    3. ```
       bin/magento s:d:c      
